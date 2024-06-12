@@ -2,33 +2,10 @@ const PanelOne = require('../models/panelOneModel');
 const PanelTwo = require('../models/panelTwoModel');
 const PanelThree = require('../models/panelThreeModel');
 const PanelFour = require('../models/panelFourModel');
-// const { redis } = require('../config/dbConfig');
 
-// Define a single function to handle all panel names 
+// Define a single function to handle all panel names
 const getPanelData = async (req, res) => {
     const panelName = req.params.panelName;
-
-//~~~~~~~~  Get data from redis cache
-
-    // var panelData = await redis.get(panelName);
-
-    // if (!panelData) {
-    //     return res.status(404).send('Panel data not found in Redis');
-    // }
-
-    // // Create a JSON object with the key and data
-    // let pdata = panelData;
-    // let response = { [panelName]: pdata };
-
-    // // Send the response
-    // res.json(response);
-
-//~~~~~~~~  Get data from redis cache
-
-
-
-//~~~~~~~~  Get data from MongoDB
-
     try {
         let panelData;
         if (panelName in PanelOne.schema.paths) {
@@ -46,15 +23,11 @@ const getPanelData = async (req, res) => {
         if (!panelData) {
             return res.status(404).send('Panel not found');
         }
-
         res.json(panelData);
-
     } catch (error) {
         console.error('Error:', error.message);
         res.status(500).send('Internal Server Error');
     }
-
-//~~~~~~~~  Get data from MongoDB
 };
 
 module.exports = { getPanelData };

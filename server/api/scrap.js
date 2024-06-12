@@ -256,37 +256,33 @@ const modifiedHtmlContent = [];
 const maxRetries = 3;
 
 async function getHtmlTags(page, url, index) {
-  const customTimeout = 28000; // Custom timeout set to 28 seconds
-
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       console.log(`Attempting to fetch URL ${url} for the ${attempt} time.`);
-      await page.goto(`https://dpbossss.services${url}`, {
-        waitUntil: 'networkidle0',
-        timeout: customTimeout
-      });
+      await page.goto(`https://dpbossss.services${url}`, { waitUntil: 'networkidle0' });
 
       const htmlContent = await page.$eval('html', element => element.outerHTML);
       const modifiedContent = htmlContent
         .replaceAll('https://dpbossss.services', 'http://localhost:5173')
-        .replaceAll(/Boss|dpbossss.services|DPBOSS\.Services|DPBOSS|dpboss|dp|boss|DP|DP\sBOSS|DpBossss\.services/gi, 'WOLF247');
+        .replaceAll(/Boss|dpbossss.services|DPBOSS\.Services|DPBOSS|dpboss|dp|boss|DP|DP\sBOSS|DpBossss\.services/gi, 'WOLF247')
 
       modifiedHtmlContent[index] = modifiedContent;
       console.log(`Data for URL ${url} collected successfully.`);
+
+      // Wait for 2 seconds before moving to the next URL
+      await new Promise(resolve => setTimeout(resolve, 2000));
       return; // Exit the function on successful fetch
     } catch (error) {
       console.error(`Error fetching URL ${url} on attempt ${attempt}:`, error.message);
       if (attempt === maxRetries) {
-        console.error(`Failed to fetch URL ${url} after ${maxRetries} attempts. Storing error HTML and moving to the next URL.`);
+        console.error(`Failed to fetch URL ${url} after ${maxRetries} attempts.`);
         modifiedHtmlContent[index] = await getErrorHtmlContent();
-        break; // Break out of the loop and move to the next URL
+      } else {
+        await new Promise(resolve => setTimeout(resolve, 2000)); // Wait before retrying
       }
-      // Wait for 2 seconds before retrying
-      await new Promise(resolve => setTimeout(resolve, 2000));
     }
   }
 }
-
 
 async function getErrorHtmlContent() {
   try {
