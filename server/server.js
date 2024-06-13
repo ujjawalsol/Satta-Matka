@@ -2,7 +2,8 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const getHtmlTags  = require('./api/scrap');
-const { dbconfig } = require('./config/dbConfig');
+const mongoose  = require('./config/mongodbConfig');
+const redis  = require('./config/redisConfig');
 const {storeHtmlTags} = require('./controller/apiController'); 
 const panelRouter = require('./routes/apiRoutes');
 

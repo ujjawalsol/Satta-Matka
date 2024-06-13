@@ -9,3 +9,7 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
     console.log('Error connecting to database', err.message);
 });
 
+
+module.exports = mongoose;
+
+

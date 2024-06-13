@@ -3,11 +3,10 @@ const PanelTwo = require('../models/panelTwoModel');
 const PanelThree = require('../models/panelThreeModel');
 const PanelFour = require('../models/panelFourModel');
 const startScraping = require('../api/scrap');
+const zlib = require('zlib');
 
-let homeDocument = null;
-let homeDocumentTwo = null;
-let homeDocumentThree = null;
-let homeDocumentFour = null;
+let homeDocument, homeDocumentTwo, homeDocumentThree, homeDocumentFour;
+
 const groupOneFields = ['Home', 'MilanMorning', 'Sridevi', 'KalyanMorning', 'Padmavati',
   'Madhuri', 'SrideviMorning', 'Maharani', 'Prabhat', 'KarnatakDay', 'TimeBazarMorning',
   'TimeBazar', 'Diamond', 'TaraMumbaiDay', 'MainKalyan', 'TimeBazarDay', 'MilanDay',
@@ -332,31 +331,38 @@ async function storeHtmlTags() {
     try {
       for await (const htmlTag of scraper) {
         if (htmlTag) {
+          const buffer = Buffer.from(htmlTag);
+          const compressedBuffer = zlib.deflateSync(buffer);
+          const compressedData = compressedBuffer.toString('base64');
+
+        // let buffer = Buffer.from(htmlTag);
+        // let compressedData = zlib.deflateSync(buffer);
+
           switch (currentCollection) {
             case 1:
               if (fieldIndex < groupOneFields.length) {
-                homeDocument[groupOneFields[fieldIndex]] = htmlTag;
+                homeDocument[groupOneFields[fieldIndex]] = compressedData;
                 await homeDocument.save();
                 console.log(`${groupOneFields[fieldIndex]} data stored/updated successfully.`);
               }
               break;
             case 2:
               if (fieldIndex < groupTwoFields.length) {
-                homeDocumentTwo[groupTwoFields[fieldIndex]] = htmlTag;
+                homeDocumentTwo[groupTwoFields[fieldIndex]] = compressedData;
                 await homeDocumentTwo.save();
                 console.log(`${groupTwoFields[fieldIndex]} data stored/updated successfully.`);
               }
               break;
             case 3:
               if (fieldIndex < groupThreeFields.length) {
-                homeDocumentThree[groupThreeFields[fieldIndex]] = htmlTag;
+                homeDocumentThree[groupThreeFields[fieldIndex]] = compressedData;
                 await homeDocumentThree.save();
                 console.log(`${groupThreeFields[fieldIndex]} data stored/updated successfully.`);
               }
               break;
             case 4:
               if (fieldIndex < groupFourFields.length) {
-                homeDocumentFour[groupFourFields[fieldIndex]] = htmlTag;
+                homeDocumentFour[groupFourFields[fieldIndex]] = compressedData;
                 await homeDocumentFour.save();
                 console.log(`${groupFourFields[fieldIndex]} data stored/updated successfully.`);
               }
