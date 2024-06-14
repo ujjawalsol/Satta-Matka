@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { sendRequest } from '../../utils/Axios';
+import parse from 'html-react-parser';
 
 const KalyanMorning = () => {
   const [htmlData, setHtmlData] = useState('');
@@ -18,7 +19,7 @@ const KalyanMorning = () => {
   }, []);
 
   return (
-    <div dangerouslySetInnerHTML={{ __html: htmlData }} />
+  <div>{parse(htmlData)}</div>
   );
 }
 

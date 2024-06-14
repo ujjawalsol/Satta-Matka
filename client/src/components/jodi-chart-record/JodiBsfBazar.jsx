@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { sendRequest } from '../../utils/Axios';
+import parse from 'html-react-parser';
 
 const JodiBsfBazar = () => {
     const [htmlData, setHtmlData] = useState('');
@@ -18,7 +19,7 @@ const JodiBsfBazar = () => {
     }, []);
   
     return (
-      <div dangerouslySetInnerHTML={{ __html: htmlData }} />
+    <div>{parse(htmlData)}</div>
     );
   }
 

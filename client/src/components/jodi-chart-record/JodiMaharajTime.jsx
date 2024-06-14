@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import { sendRequest } from '../../utils/Axios';
+import parse from 'html-react-parser';
 
 const JodiMaharajTime = () => {
   const [htmlData, setHtmlData] = useState('');
@@ -19,7 +20,7 @@ const JodiMaharajTime = () => {
   }, []);
 
   return (
-    <div dangerouslySetInnerHTML={{ __html: htmlData }} />
+  <div>{parse(htmlData)}</div>
   );
 }
 

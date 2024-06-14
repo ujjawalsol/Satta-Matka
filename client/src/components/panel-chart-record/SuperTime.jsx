@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { sendRequest } from '../../utils/Axios';
+import parse from 'html-react-parser';
 
 const SuperTime = () => {
   const [htmlData, setHtmlData] = useState('');
@@ -18,7 +19,7 @@ const SuperTime = () => {
   }, []);
 
   return (
-    <div dangerouslySetInnerHTML={{ __html: htmlData }} />
+  <div>{parse(htmlData)}</div>
   );
 }
 

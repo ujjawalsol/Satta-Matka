@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { sendRequest } from '../../utils/Axios';
+import parse from 'html-react-parser';
 
 const JodiSridevi = () => {
   const [htmlData, setHtmlData] = useState('');

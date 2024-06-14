@@ -242,6 +242,7 @@ import JodiRajyogNight from './components/jodi-chart-record/JodiRajyogNight';
 import JodiGowa from './components/jodi-chart-record/JodiGowa';
 import JodiRoyalDay from './components/jodi-chart-record/JodiRoyalDay';
 import JodiMumbaiStarMain from './components/jodi-chart-record/JodiMumbaiStartMain';
+import NotFoundPage from './components/NotFoundPage';
 
 
 
@@ -496,6 +497,7 @@ const App = () => {
           <Route path="/jodi-chart-record/gowa.php" element={<JodiGowa />} />
           <Route path="/jodi-chart-record/royal-day.php" element={<JodiRoyalDay />} />
           <Route path="/jodi-chart-record/mumbai-star-main.php" element={<JodiMumbaiStarMain />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
     </>

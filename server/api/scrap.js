@@ -298,7 +298,7 @@ async function getErrorHtmlContent() {
 async function* startScraping() {
   const browser = await puppeteer.launch({
     headless: false,
-    executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
+    executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe'
   });
 
   try {

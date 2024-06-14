@@ -1,4 +1,4 @@
-<html lang="en-in">
+const htmData = `<html lang="en-in">
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1525,4 +1525,6 @@
 
 </body>
 
-</html>
+</html>`
+
+export default htmData;   

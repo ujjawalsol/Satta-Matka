@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { sendRequest } from '../../utils/Axios';
+import parse from 'html-react-parser';
 
 const Sridevi = () => {
   const [htmlData, setHtmlData] = useState('');
 
   useEffect(() => {
     async function fetchData() {
-      const response = await sendRequest('GET');
+      const response = await sendRequest('GET', 'Sridevi');
       console.log('Response:', response);
       setHtmlData(response.Sridevi);
       console.log('htmlData:', response.Sridevi);
@@ -15,11 +16,7 @@ const Sridevi = () => {
   }, []);
 
   return (
-    // <div dangerouslySetInnerHTML={{ __html: htmlData }} />
-
-    <>
-    <h1>Welcome to WOLF244</h1>
-    </>
+  <div>{parse(htmlData)}</div>
   );
 }
 

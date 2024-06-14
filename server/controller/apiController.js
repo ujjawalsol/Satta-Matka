@@ -5,6 +5,10 @@ const PanelFour = require('../models/panelFourModel');
 const startScraping = require('../api/scrap');
 const zlib = require('zlib');
 
+//Store data in redis
+const redis = require('../config/redisConfig')
+
+
 let homeDocument, homeDocumentTwo, homeDocumentThree, homeDocumentFour;
 
 const groupOneFields = ['Home', 'MilanMorning', 'Sridevi', 'KalyanMorning', 'Padmavati',
@@ -335,8 +339,8 @@ async function storeHtmlTags() {
           const compressedBuffer = zlib.deflateSync(buffer);
           const compressedData = compressedBuffer.toString('base64');
 
-        // let buffer = Buffer.from(htmlTag);
-        // let compressedData = zlib.deflateSync(buffer);
+          // let buffer = Buffer.from(htmlTag);
+          // let compressedData = zlib.deflateSync(buffer);
 
           switch (currentCollection) {
             case 1:
@@ -344,6 +348,16 @@ async function storeHtmlTags() {
                 homeDocument[groupOneFields[fieldIndex]] = compressedData;
                 await homeDocument.save();
                 console.log(`${groupOneFields[fieldIndex]} data stored/updated successfully.`);
+
+
+
+                //Store data in redis
+                await redis.set(groupOneFields[fieldIndex], compressedData)
+                  .then((res) => {
+                    console.log(`Redis set for ${groupOneFields[fieldIndex]} `);
+                  }).catch((err) => {
+                    console.log(err.message);
+                  });
               }
               break;
             case 2:
@@ -351,6 +365,16 @@ async function storeHtmlTags() {
                 homeDocumentTwo[groupTwoFields[fieldIndex]] = compressedData;
                 await homeDocumentTwo.save();
                 console.log(`${groupTwoFields[fieldIndex]} data stored/updated successfully.`);
+
+
+
+                //Store data in redis
+                await redis.set(groupTwoFields[fieldIndex], compressedData)
+                  .then((res) => {
+                    console.log(`Redis set for ${groupTwoFields[fieldIndex]} `);
+                  }).catch((err) => {
+                    console.log(err.message);
+                  });
               }
               break;
             case 3:
@@ -358,6 +382,16 @@ async function storeHtmlTags() {
                 homeDocumentThree[groupThreeFields[fieldIndex]] = compressedData;
                 await homeDocumentThree.save();
                 console.log(`${groupThreeFields[fieldIndex]} data stored/updated successfully.`);
+
+
+
+                //Store data in redis
+                await redis.set(groupThreeFields[fieldIndex], compressedData)
+                  .then((res) => {
+                    console.log(`Redis set for ${groupThreeFields[fieldIndex]} `);
+                  }).catch((err) => {
+                    console.log(err.message);
+                  });
               }
               break;
             case 4:
@@ -365,6 +399,16 @@ async function storeHtmlTags() {
                 homeDocumentFour[groupFourFields[fieldIndex]] = compressedData;
                 await homeDocumentFour.save();
                 console.log(`${groupFourFields[fieldIndex]} data stored/updated successfully.`);
+
+
+
+                //Store data in redis
+                await redis.set(groupFourFields[fieldIndex], compressedData)
+                  .then((res) => {
+                    console.log(`Redis set for ${groupFourFields[fieldIndex]} `);
+                  }).catch((err) => {
+                    console.log(err.message);
+                  });
               }
               break;
           }
@@ -372,10 +416,12 @@ async function storeHtmlTags() {
           fieldIndex++;
 
           // Transition to the next collection if we have processed all fields in the current collection
-          if ((currentCollection === 1 && fieldIndex >= groupOneFields.length) ||
+          if (
+            (currentCollection === 1 && fieldIndex >= groupOneFields.length) ||
             (currentCollection === 2 && fieldIndex >= groupTwoFields.length) ||
             (currentCollection === 3 && fieldIndex >= groupThreeFields.length) ||
-            (currentCollection === 4 && fieldIndex >= groupFourFields.length)) {
+            (currentCollection === 4 && fieldIndex >= groupFourFields.length)
+          ) {
             currentCollection++;
             fieldIndex = 0;
           }
@@ -398,7 +444,7 @@ async function storeHtmlTags() {
 }
 
 // Schedule the function to run every hour
-setInterval(storeHtmlTags, 60 * 60 * 1000);
+setInterval(storeHtmlTags, 30 * 60 * 1000);
 
 module.exports = {
   storeHtmlTags
